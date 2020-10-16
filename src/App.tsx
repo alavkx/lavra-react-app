@@ -1,37 +1,38 @@
 import React from "react";
-import { css } from "styled-components/macro";
-
-export const fullBleed = css`
-  width: 100%;
-  grid-column: 1 / -1;
-`;
+import { Link, Switch, BrowserRouter as Router, Route } from "react-router-dom";
+import { ErrorBoundary } from "react-error-boundary";
+// import { ReactQueryDevtools } from "react-query-devtools";
+import { Layout } from "./Layout";
+import { Home } from "./Home";
+import { NotFound } from "./NotFound";
+import { ErrorFallback } from "./ErrorFallback";
 
 export const App = () => (
-  <>
-    <nav
-      css={`
-        width: 100%;
-        height: 2rem;
-        text-align: right;
-        background-color: ;
-      `}
-    >
-      lavra
-    </nav>
-    <main
-      css={`
-        display: grid;
-        grid-template-columns:
-          1fr
-          min(65ch, 100%)
-          1fr;
-        & > * {
-          grid-column: 2;
-        }
-      `}
-    >
-      <img css={fullBleed} src="https://random.dog/woof" alt="A doggie" />
-      <h1>Howdy</h1>
-    </main>
-  </>
+  <ErrorBoundary FallbackComponent={ErrorFallback}>
+    <Router>
+      <nav
+        css={`
+          width: 100%;
+          height: 2rem;
+        `}
+      >
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+        </ul>
+      </nav>
+      <Layout>
+        <Switch>
+          <Route path="/">
+            <Home />
+          </Route>
+          <Route path="/not-found">
+            <NotFound />
+          </Route>
+        </Switch>
+      </Layout>
+    </Router>
+    {/* <ReactQueryDevtools initialIsOpen /> */}
+  </ErrorBoundary>
 );
